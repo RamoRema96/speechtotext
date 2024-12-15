@@ -55,20 +55,20 @@ file=audio_file
     print("Transcription completed!")
     return transcription.text
 
-def analyze_text_with_gpt(text, context=None):
+def analyze_text_with_gpt(text, question, context=None):
     """Analyze the transcription with GPT."""
     print("Analyzing text with GPT...")
 
 
     response = client.chat.completions.create(
   model="gpt-4o",
-  messages=[
-    {
-      "role": "system", "content": "You are an assistant analyzing a conversation and suggestin new question for the interview.",  
-      "role": "user", "content": "Here's the answer of the candidate " + text,
-      "content": context
-    }
-  ],
+    messages = [
+        {"role": "system", "content": "You are an assistant analyzing interview responses. Your tasks are: 1) Assess if the candidate's answer is satisfactory. 2) Provide an explanation. 3) Suggest follow-up questions if necessary."},
+        {"role": "user", "content": f"Context: {context}" if context else "No specific context provided."},
+        {"role": "user", "content": f"Question: {question}"},
+        {"role": "user", "content": f"Candidate's answer: {text}"},
+    ],
+    
   temperature=0.5,
   max_tokens=1024,
   top_p=1
@@ -81,7 +81,8 @@ def main():
     print("\nTranscription:\n", transcription)
     
     context = "This is an inteview in python, docker and cloud enviornment. I need to understand If the canditate is fit for the role"
-    analysis = analyze_text_with_gpt(transcription, context)
+    question = "Qual è la differenza tra un attributo di classe ed uno di oggetto in python?"
+    analysis = analyze_text_with_gpt(transcription, question, context)
     print("\nAnalysis:\n", analysis)
 
 
