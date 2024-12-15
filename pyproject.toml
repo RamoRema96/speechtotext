@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "speechtotext"
+version = "0.1.0"
+description = ""
+authors = ["Omar Amer <oamer@keybiz.it>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyaudio = "^0.2.14"
+openai = "^1.57.4"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
