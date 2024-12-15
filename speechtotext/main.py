@@ -55,10 +55,36 @@ file=audio_file
     print("Transcription completed!")
     return transcription.text
 
+def analyze_text_with_gpt(text, context=None):
+    """Analyze the transcription with GPT."""
+    print("Analyzing text with GPT...")
+
+
+    response = client.chat.completions.create(
+  model="gpt-4o",
+  messages=[
+    {
+      "role": "system", "content": "You are an assistant analyzing a conversation and suggestin new question for the interview.",  
+      "role": "user", "content": "Here's the answer of the candidate " + text,
+      "content": context
+    }
+  ],
+  temperature=0.5,
+  max_tokens=1024,
+  top_p=1
+)
+    return response
+
 def main():
     record_audio()
     transcription = transcribe_audio(FILENAME)
     print("\nTranscription:\n", transcription)
+    
+    context = "This is an inteview in python, docker and cloud enviornment. I need to understand If the canditate is fit for the role"
+    analysis = analyze_text_with_gpt(transcription, context)
+    print("\nAnalysis:\n", analysis)
+
+
 
 if __name__ == "__main__":
     main()
